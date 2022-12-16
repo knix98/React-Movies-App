@@ -13,7 +13,7 @@ const initialMoviesState = {
 
 //state is the current state(state before executing the action) inside the store
 //default value has been given for the case if the state has not yet been made inside the store(that is, their is no state named 'movies' inside the store initially)
-export default function movies(state = initialMoviesState, action) {
+export function movies(state = initialMoviesState, action) {
   // if (action.type === ADD_MOVIES) {
   //   return {
   //     ...state,
@@ -50,4 +50,27 @@ export default function movies(state = initialMoviesState, action) {
     default:
       return state;
   }
+}
+
+const initialSearchState = {
+  result: {},
+};
+
+export function search(state = initialSearchState, action) {
+  return state;
+}
+
+const initialRootState = {
+  movies: initialMoviesState,
+  search: initialSearchState,
+};
+
+export default function rootReducer(state = initialRootState, action) {
+  return {
+    //by calling movies(state, action), wud return the updated movies state here
+    //and similarly search(state, action) wud return the updated search state here
+    //and then our rootReducer wud pass this updated state object to the store
+    movies: movies(state.movies, action),
+    search: search(state.search, action),
+  };
 }

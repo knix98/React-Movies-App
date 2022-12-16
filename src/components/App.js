@@ -13,19 +13,16 @@ class App extends React.Component {
     //so this way, whenever any changes occur to the state inside store, subscribe function will execute
     //which will re-render(forceUpdate) the whole App component(hence everything will be re-rendered)
     store.subscribe(() => {
-      console.log("UPDATED");
       this.forceUpdate();
     });
 
     store.dispatch(addMovies(data));
-
-    console.log("STATE", this.props.store.getState());
   }
 
   isMovieFavourite = (movie) => {
-    const { favourites } = this.props.store.getState();
+    const { movies } = this.props.store.getState();
 
-    const index = favourites.indexOf(movie);
+    const index = movies.favourites.indexOf(movie);
 
     if (index !== -1) return true;
     return false;
@@ -36,8 +33,8 @@ class App extends React.Component {
   };
 
   render() {
-    const { list, favourites, showFavourites } = this.props.store.getState();
-    console.log("RENDER");
+    const { movies } = this.props.store.getState(); //state : { movies: {}, search: {} }
+    const { list, favourites, showFavourites } = movies;
 
     //deciding whether to show all movies list or only favourites movies
     //depending upon the value of 'showFavourites' inside state in store
