@@ -1,3 +1,4 @@
+import { combineReducers } from "redux";
 import {
   ADD_MOVIES,
   ADD_TO_FAVOURITES,
@@ -60,17 +61,24 @@ export function search(state = initialSearchState, action) {
   return state;
 }
 
-const initialRootState = {
-  movies: initialMoviesState,
-  search: initialSearchState,
-};
+// const initialRootState = {
+//   movies: initialMoviesState,
+//   search: initialSearchState,
+// };
 
-export default function rootReducer(state = initialRootState, action) {
-  return {
-    //by calling movies(state, action), wud return the updated movies state here
-    //and similarly search(state, action) wud return the updated search state here
-    //and then our rootReducer wud pass this updated state object to the store
-    movies: movies(state.movies, action),
-    search: search(state.search, action),
-  };
-}
+// export default function rootReducer(state = initialRootState, action) {
+//   return {
+//     //by calling movies(state, action), wud return the updated movies state here
+//     //and similarly search(state, action) wud return the updated search state here
+//     //and then our rootReducer wud pass this updated state object to the store
+//     movies: movies(state.movies, action),
+//     search: search(state.search, action),
+//   };
+// }
+
+//combineReducers work internally in the above way (see the commented code just above)
+export default combineReducers({
+  //we want the movies object to be handled by 'movies' reducer and similarly for search as well
+  movies, //movies: movies
+  search,
+});
