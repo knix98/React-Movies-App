@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 import "./index.css";
 import App from "./components/App";
@@ -27,13 +28,30 @@ const logger =
   (next) =>
   (action) => {
     //middleware code
-    console.log("ACTION_TYPE = ", action.type);
+    if (typeof action !== "function") {
+      console.log("ACTION_TYPE = ", action.type);
+    }
 
     //next() will call the next middleware in line, or will call the dispatch func if this was last middleware
     next(action);
   };
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+// const thunk =
+//   ({ dispatch, getState }) =>
+//   (next) =>
+//   (action) => {
+//     //if action is not an object, but a function...
+//     if(typeof action === 'function'){
+//       action(dispatch);
+//       return;
+//     }
+
+//     //if action is an object only then simply next() will be called
+//     //next() will call the next middleware in line, or will call the dispatch func if this was last middleware
+//     next(action);
+//   };
+
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
