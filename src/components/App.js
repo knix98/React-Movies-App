@@ -4,6 +4,7 @@ import { data } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShowFavourites } from "../actions";
+import { StoreContext } from "..";
 
 class App extends React.Component {
   componentDidMount() {
@@ -33,7 +34,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { movies, search } = this.props.store.getState(); //state : { movies: {}, search: {} }
+    const { movies } = this.props.store.getState(); //state : { movies: {}, search: {} }
     const { list, favourites, showFavourites } = movies;
 
     //deciding whether to show all movies list or only favourites movies
@@ -41,7 +42,7 @@ class App extends React.Component {
     const displayMovies = showFavourites ? favourites : list;
     return (
       <div className="App">
-        <Navbar dispatch={this.props.store.dispatch} search={search} />
+        <Navbar />
         <div className="main">
           <div className="tabs">
             <div
@@ -84,4 +85,18 @@ class App extends React.Component {
   }
 }
 
-export default App;
+//created the AppWrapper for <App> component so that, we could use store(coming from StoreContext.Consumer) inside <App>
+//because we want to use store in componentDidMount also, but StoreContext.Consumer can only be used inside render() and hence not inside componentDidMount
+class AppWrapper extends React.Component {
+  render() {
+    return (
+      //using the StoreContext thru StoreContext.Consumer
+      //StoreContext.Consumer expects a callback funcn in it, and react internally will give the 'value' prop of StoreContext.Provider as argument to this funcn
+      <StoreContext.Consumer>
+        {(store) => <App store={store} />}
+      </StoreContext.Consumer>
+    );
+  }
+}
+
+export default AppWrapper;
