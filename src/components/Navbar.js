@@ -1,8 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
 
-// import { data } from "../data";
 import { handleSearchSelected, handleMovieSearch } from "../actions";
-import { StoreContext } from "..";
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -13,7 +12,7 @@ class Navbar extends React.Component {
   }
 
   handleAddToMovies = (movie) => {
-    this.props.store.dispatch(handleSearchSelected(movie.Title));
+    this.props.dispatch(handleSearchSelected(movie.Title));
     this.setState({
       searchText: "",
     });
@@ -21,13 +20,13 @@ class Navbar extends React.Component {
 
   handleSearch = () => {
     const { searchText } = this.state;
-    this.props.store.dispatch(handleMovieSearch(searchText));
+    this.props.dispatch(handleMovieSearch(searchText));
   };
 
   handleEnterKey = (e) => {
     if (e.key === "Enter") {
       const { searchText } = this.state;
-      this.props.store.dispatch(handleMovieSearch(searchText));
+      this.props.dispatch(handleMovieSearch(searchText));
     }
   };
 
@@ -38,8 +37,7 @@ class Navbar extends React.Component {
   };
 
   render() {
-    const { result: movies, showSearchResults } =
-      this.props.store.getState().search;
+    const { result: movies, showSearchResults } = this.props.search;
     return (
       <div className="nav">
         <div className="search-container">
@@ -73,14 +71,23 @@ class Navbar extends React.Component {
   }
 }
 
-class NavbarWrapper extends React.Component {
-  render() {
-    return (
-      <StoreContext.Consumer>
-        {(store) => <Navbar store={store} />}
-      </StoreContext.Consumer>
-    );
-  }
+// class NavbarWrapper extends React.Component {
+//   render() {
+//     return (
+//       <StoreContext.Consumer>
+//         {(store) => <Navbar store={store} />}
+//       </StoreContext.Consumer>
+//     );
+//   }
+// }
+
+//this function would internally get(by react-redux) the 'state' object from store as argument
+//from this function return an object containing all the objects that you want as props in the connected Component
+function mapStateToProps({ search }) {
+  return {
+    search,
+  };
 }
 
-export default NavbarWrapper;
+//passing the callback and the Component that we want to connect to the store
+export default connect(mapStateToProps)(Navbar);

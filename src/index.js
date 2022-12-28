@@ -1,4 +1,5 @@
-import React, { createContext } from "react";
+import React from "react";
+import { Provider } from "react-redux";
 import ReactDOM from "react-dom/client";
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -53,19 +54,57 @@ const logger =
 
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
-export const StoreContext = createContext();
+// export const StoreContext = createContext();
 
-class Provider extends React.Component {
-  render() {
-    const { store } = this.props;
-    return (
-      //all the components in the app using value=store using  StoreContext.Consumer will be re-rendered whenever the value=store updates/changes
-      <StoreContext.Provider value={store}>
-        {this.props.children}
-      </StoreContext.Provider>
-    );
-  }
-}
+// class Provider extends React.Component {
+//   render() {
+//     const { store } = this.props;
+//     return (
+//       //all the components in the app using value=store using  StoreContext.Consumer will be re-rendered whenever the value=store updates/changes
+//       <StoreContext.Provider value={store}>
+//         {this.props.children}
+//       </StoreContext.Provider>
+//     );
+//   }
+// }
+
+// const connectedComponent = connect(callback)(App);
+// export function connect(callback) {
+//   return function (Component) {
+//     class ConnectedComponent extends React.Component {
+//       constructor(props) {
+//         super(props);
+//         this.unsubscribe = this.props.store.subscribe(() => {
+//           this.forceUpdate();
+//         });
+//       }
+
+//       componentWillUnmount() {
+//         this.unsubscribe();
+//       }
+//       render() {
+//         const { store } = this.props;
+//         const state = store.getState();
+//         const dataToBeSentAsProps = callback(state);
+
+//         return <Component dispatch={store.dispatch} {...dataToBeSentAsProps} />;
+//       }
+//     }
+
+//     class ConnectedComponentWrapper extends React.Component {
+//       render() {
+//         return (
+//           <StoreContext.Consumer>
+//             {(store) => {
+//               return <ConnectedComponent store={store} />;
+//             }}
+//           </StoreContext.Consumer>
+//         );
+//       }
+//     }
+//     return ConnectedComponentWrapper;
+//   };
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
